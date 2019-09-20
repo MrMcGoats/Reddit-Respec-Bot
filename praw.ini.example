@@ -1,0 +1,22 @@
+[DEFAULT]
+comment_kind=t1
+message_kind=t4
+redditor_kind=t2
+submission_kind=t3
+subreddit_kind=t5
+
+#Reddit OAuth
+oauth_url=https://oauth.reddit.com
+
+#URL prefix for regular requests
+reddit_url=https://www.reddit.com
+
+#URL prefix for short URLS
+short_url=https://redd.it
+
+[bot1]
+client_id=
+client_secret=
+password=
+username=
+user_agent=Reddit Bot
