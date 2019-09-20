@@ -4,7 +4,18 @@ import praw
 from os import environ
 
 def main():
-    reddit=praw.Reddit('bot1')
+    
+    #TODO: check if an account is banned
+    try:
+        bots=numpy.load("bots.npy")
+    except:
+        bots=[{'id':'bot1','banned':False}]
+
+    reddit=None
+    for i in bots:
+        if not i['banned']:
+            reddit=praw.Reddit(i['id'])
+            
     subreddit=reddit.subreddit(environ['SUBREDDIT'])
     
     posts_replied=None
@@ -16,7 +27,10 @@ def main():
     for i in subreddit.new(limit=5):
         if "M4F" in i.title.upper():
             if i.id not in posts_replied:
-                i.reply("F")
+                try:
+                    i.reply("F")
+                except:
+                    break
                 posts_replied.append(i.id)
     
     numpy.save("posts_replied.npy",posts_replied,allow_pickle=False)

@@ -2,3 +2,4 @@ praw.ini
 env
 *~
 posts_replied.npy
+bots.npy
