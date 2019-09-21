@@ -37,7 +37,7 @@ def main():
         posts_replied=[]
     
     for i in subreddit.new(limit=5):
-        if "M4F" in i.title.upper():
+        if environ["FILTER"].upper() in i.title.upper():
             if i.id not in posts_replied:
                 try:
                     i.reply("F")
