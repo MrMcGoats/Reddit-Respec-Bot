@@ -39,10 +39,14 @@ def main():
     for i in subreddit.new(limit=5):
         if environ["FILTER"].upper() in i.title.upper():
             if i.id not in posts_replied:
-                try:
-                    i.reply("F")
-                except:
-                    break
+                done=False
+                while not done: #This waits for the next allowed request. Reddit ratelimits
+                    done=True
+                    try:
+                        i.reply("F")
+                    except:
+                        done=False
+                        
                 posts_replied.append(i.id)
     
     numpy.save("posts_replied.npy",posts_replied,allow_pickle=False)
