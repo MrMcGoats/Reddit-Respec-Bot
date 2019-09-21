@@ -2,20 +2,32 @@ import numpy
 import praw
 
 from os import environ
+from sys import stderr
 
 def main():
     
-    #TODO: check if an account is banned
     try:
-        bots=numpy.load("bots.npy")
+        bots=numpy.load("bots.npy",allow_pickle=True)
     except:
         bots=[{'id':'bot1','banned':False}]
 
     reddit=None
+    iterator=0
     for i in bots:
         if not i['banned']:
             reddit=praw.Reddit(i['id'])
-            
+            if reddit.subreddit(environ['SUBREDDIT']).banned(redditor=reddit.user.me()):
+                bots[iterator]['banned']==True
+            else:
+                break
+        iterator+=1
+        
+    if reddit.subreddit(environ['SUBREDDIT']).banned(redditor=reddit.user.me()):
+        print("Cannot continue; all acounts have been banned", file=stderr)
+        exit(1)
+
+    numpy.save("bots.npy",bots,allow_pickle=True)
+    
     subreddit=reddit.subreddit(environ['SUBREDDIT'])
     
     posts_replied=None
